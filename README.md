@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/Kazuto/Hanabi/assets/25435034/af02a64b-9950-48f9-a5da-bd63e6348b10" width="600" alt="Hanabi">
+  <img src="https://github.com/Kazuto/Hanabi/assets/25435034/46aff019-0264-4628-9dd5-6f60f7000bd6" width="600" alt="Hanabi">
 </p>
 
 Greetings, dear user! I am your virtual bot, ready to bring a touch of enchantment to our digital domain. 🌸
