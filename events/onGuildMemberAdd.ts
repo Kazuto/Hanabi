@@ -1,15 +1,18 @@
-import { TextChannel } from 'discord.js/typings';
-import useUpdateStats from '../composables/useUpdateStats';
+import { Client, GuildMember, TextChannel } from 'discord.js';
+import useUpdateStats from '../composables/useUpdateStats.ts';
 
-export default (client) =>
-  client.on('guildMemberAdd', (member) => {
-    const channel: TextChannel = member.guild.channels.cache.find(
-      (channel) => channel.id === process.env.DISCORD_WELCOME_CHANNEL_ID
-    ) as TextChannel;
+export default async (client: Client, member: GuildMember) => {
+  const { DISCORD_WELCOME_CHANNEL_ID: channelId } = process.env;
 
-    if (!channel) return;
+  if (channelId === undefined) return;
 
-    channel.send(`Welcome to the server, ${member}`);
+  const channel: TextChannel = member.guild.channels.cache.find(
+    (channel) => channel.id === channelId
+  ) as TextChannel;
 
-    useUpdateStats(client);
-  });
+  if (!channel) return;
+
+  channel.send(`Welcome to the server, ${member}`);
+
+  await useUpdateStats(client);
+};

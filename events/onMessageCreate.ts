@@ -1,23 +1,24 @@
-import { Message, TextChannel, GuildMember } from 'discord.js/typings';
-import { clearChannel } from '../composables/usePurge';
-import { isAdmin, notAdminError } from '../composables/useRoles';
+import { Message, TextChannel, GuildMember } from 'discord.js';
+import { clearChannel } from '../composables/usePurge.ts';
+import { isAdmin, notAdminError } from '../composables/useRoles.ts';
 
-export default (client) =>
-  client.on('messageCreate', (message: Message) => {
-    if (message.author.bot) return;
+export default async (message: Message) => {
+  if (message.author.bot) return;
 
-    if (!message.content.startsWith('!')) return;
+  if (!message.content.startsWith('!')) return;
 
-    const channel: TextChannel = message.channel as TextChannel;
-    const member: GuildMember = message.member as GuildMember;
+  const channel: TextChannel = message.channel as TextChannel;
+  const member: GuildMember = message.member as GuildMember;
 
-    if (message.content == '!purge') {
-      if (!isAdmin(channel, member)) {
-        channel.send(notAdminError);
+  if (message.content == '!purge') {
+    if (await isAdmin(member)) {
+      await clearChannel(channel, member);
 
-        return;
-      }
-
-      clearChannel(channel, member);
+      return;
     }
-  });
+
+    channel.send(notAdminError);
+
+    return;
+  }
+};

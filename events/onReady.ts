@@ -1,17 +1,19 @@
-import { TextChannel } from 'discord.js/typings';
-import useUpdateStats from '../composables/useUpdateStats';
+import { Client, TextChannel } from 'discord.js';
 
-export default (client) =>
-  client.on('ready', () => {
-    console.info(`Discord bot ready. Logged in as ${client.user.tag}! 🚀`);
+export default async (client: Client) => {
+  if (client.user === null || client.user.tag === null) return;
 
-    const channel: TextChannel = client.channels.cache.get(
-      process.env.DISCORD_BOT_DEV_CHANNEL_ID
-    ) as TextChannel;
+  const { DISCORD_BOT_DEV_CHANNEL_ID: channelId } = process.env;
 
-    if (!channel) return;
+  if (channelId === undefined) return;
 
-    channel.send(`Tadaima mina-san!`);
+  console.info(`Discord bot ready. Logged in as ${client.user.tag}! 🚀`);
 
-    useUpdateStats(client);
-  });
+  const channel: TextChannel = client.channels.cache.get(
+    channelId
+  ) as TextChannel;
+
+  if (!channel) return;
+
+  await channel.send(`Tadaima mina-san!`);
+};

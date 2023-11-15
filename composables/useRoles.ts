@@ -1,14 +1,11 @@
-import { TextChannel, GuildMember, Role } from 'discord.js/typings';
+import { GuildMember } from 'discord.js';
 
-export const isAdmin = async function (
-  channel: TextChannel,
-  member: GuildMember
-): Promise<boolean> {
-  return channel.guild.roles
-    .fetch(process.env.DISCORD_BOT_ADMIN_ROLE_ID)
-    .then((role: Role) => {
-      return member.roles.cache.has(role.name);
-    });
+export const isAdmin = async function (member: GuildMember): Promise<boolean> {
+  const { DISCORD_ADMIN_ROLE_ID: adminRoleId } = process.env;
+
+  if (adminRoleId === undefined) return false;
+
+  return [...member.roles.cache.keys()].includes(adminRoleId);
 };
 
 export const notAdminError =

@@ -1,21 +1,32 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import { config } from 'dotenv';
+config();
 
-import client from './modules/client';
+import client from './core/client.ts';
+import { Events, GuildMember, Message, PartialGuildMember } from 'discord.js';
 
 import {
   onReady,
   onGuildMemberAdd,
   onGuildMemberRemove,
   onMessageCreate,
-} from './events';
+} from './events/index.ts';
 
-onReady(client);
+client.once(Events.ClientReady, async () => await onReady(client));
 
-onGuildMemberAdd(client);
+client.on(
+  Events.GuildMemberAdd,
+  async (member: GuildMember) => await onGuildMemberAdd(client, member)
+);
 
-onGuildMemberRemove(client);
+client.on(
+  Events.GuildMemberRemove,
+  async (member: GuildMember | PartialGuildMember) =>
+    await onGuildMemberRemove(client, member)
+);
 
-onMessageCreate(client);
+client.on(
+  Events.MessageCreate,
+  async (message: Message) => await onMessageCreate(message)
+);
 
 client.login(process.env.DISCORD_TOKEN);

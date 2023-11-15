@@ -1,4 +1,4 @@
-import { TextChannel, GuildMember } from 'discord.js/typings';
+import { TextChannel, GuildMember } from 'discord.js';
 
 export const clearChannel = async function (
   channel: TextChannel,
