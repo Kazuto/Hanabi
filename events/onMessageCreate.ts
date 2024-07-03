@@ -10,14 +10,14 @@ export default async (message: Message) => {
   const channel: TextChannel = message.channel as TextChannel;
   const member: GuildMember = message.member as GuildMember;
 
-  if (message.content == '!purge') {
-    if (await isAdmin(member)) {
-      await clearChannel(channel, member);
+  if (message.content.startsWith('!purge')) {
+    if ((await isAdmin(member)) === false) {
+      channel.send(notAdminError);
 
       return;
     }
 
-    channel.send(notAdminError);
+    await clearChannel(channel, member, message.content.split(' ')[1]);
 
     return;
   }

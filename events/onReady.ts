@@ -1,4 +1,5 @@
 import { Client, TextChannel } from 'discord.js';
+import useUpdateStats from '../composables/useUpdateStats.ts';
 
 export default async (client: Client) => {
   if (client.user === null || client.user.tag === null) return;
@@ -14,6 +15,8 @@ export default async (client: Client) => {
   ) as TextChannel;
 
   if (!channel) return;
+
+  await useUpdateStats(client);
 
   await channel.send(`Tadaima mina-san!`);
 };
